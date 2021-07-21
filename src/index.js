@@ -1,17 +1,59 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+/* import {
+  ApolloClient,
+  HttpLink,
+  ApolloLink,
+  InMemoryCache,
+  gql,
+  concat,
+} from "@apollo/client"; 
+
+const httpLink = new HttpLink({
+  uri: "https://learn-graphql-todo.hasura.app/v1/graphql",
+});
+
+const authMiddleware = new ApolloLink((operation, forward) => {
+  // add the authorization to the headers
+  operation.setContext({
+    headers: {
+      "x-hasura-admin-secret":
+        "yugZrYZBI98WXdRr4B2wiK7svuPB1kKevZdl2SUPzbjqNuMOD6zVWkpYQcQxE5oP",
+    },
+  });
+
+  return forward(operation);
+}); 
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: concat(authMiddleware, httpLink),
+}); */
+/* const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: "https://learn-graphql-todo.hasura.app/v1/graphql",
+    headers: {
+      "x-hasura-admin-secret":
+        "yugZrYZBI98WXdRr4B2wiK7svuPB1kKevZdl2SUPzbjqNuMOD6zVWkpYQcQxE5oP",
+    },
+  }),
+}); */
+
+const apolloClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  uri: "https://learn-graphql-todo.hasura.app/v1/graphql",
+  headers: {
+    "x-hasura-admin-secret":
+      "yugZrYZBI98WXdRr4B2wiK7svuPB1kKevZdl2SUPzbjqNuMOD6zVWkpYQcQxE5oP",
+  },
+});
 
 ReactDOM.render(
-  <React.StrictMode>
+  <ApolloProvider client={apolloClient}>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </ApolloProvider>,
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
